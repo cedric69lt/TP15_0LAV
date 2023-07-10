@@ -1,4 +1,4 @@
- #### Création du Réseau Virtuel (Vnet) 
+ # Create Vnet
  resource "azurerm_virtual_network" "test" {
    name                = "Vnet"
    address_space       = ["10.0.0.0/16"]
@@ -6,7 +6,7 @@
    resource_group_name = azurerm_resource_group.Kubernetes.name
  }
 
-#### Création du Subnet (/24 sur le /16 du Vnet)
+# Create Subnet
  resource "azurerm_subnet" "test" {
    name                 = "subNet"
    resource_group_name  = azurerm_resource_group.Kubernetes.name
@@ -14,7 +14,7 @@
    address_prefixes     = ["10.0.2.0/24"]
  }
 
-#### Création des Ip publiques que l'on attribuera aux VM's
+# Create 3 Public IPs
  resource "azurerm_public_ip" "test" {
    count                        = 3
    name                         = "Public_IP-${count.index}"
@@ -24,7 +24,7 @@
 
    depends_on = [azurerm_resource_group.Kubernetes]
  }
-#### Création de nos 3 interfaces réseau à l'aide de "count"
+# Create 3 Networks Interface with "count"
   resource "azurerm_network_interface" "test" {
    count               = 3
    name                = "Network_Interface-${count.index}"
@@ -40,7 +40,7 @@
    depends_on = [azurerm_resource_group.Kubernetes]
  }
 
-#### Création du NSG
+# Create NSG
  resource "azurerm_network_security_group" "allowedports" {
    name = "allowedports"
    resource_group_name = azurerm_resource_group.Kubernetes.name

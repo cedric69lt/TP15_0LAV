@@ -1,5 +1,6 @@
+# Create a Resource Group
 resource "azurerm_resource_group" "Kubernetes" {
-   name = "vincent-Kubernetes"
+   name = "Groupe-3_Brief-15"
    location = var.location
 }
 
@@ -8,10 +9,11 @@ resource "tls_private_key" "SSH" {
   algorithm = "RSA"
   rsa_bits  = 4096
 }
-#### 2 Workers VM
+
+# Create 2 VMs Worker
  resource "azurerm_linux_virtual_machine" "test" {
     count                 = 2
-    name                  = "Worker${count.index}"
+    name                  = "worker${count.index}"
     location              = azurerm_resource_group.Kubernetes.location
     resource_group_name   = azurerm_resource_group.Kubernetes.name
     size                  = "Standard_D2ds_v4"
@@ -19,19 +21,19 @@ resource "tls_private_key" "SSH" {
      azurerm_network_interface.test["${count.index}"].id
     ]
 
-    source_image_reference  {
-      publisher = "Canonical"
-      offer     = "0001-com-ubuntu-server-jammy"
-      sku       = "22_04-lts-gen2"
-      version   = "latest"
+    source_image_reference {
+     publisher = "OpenLogic"
+     offer     = "CentOS"
+     sku       = "8_5-gen2"
+     version   = "latest"
     }
 
-    computer_name                   = "Worker-${count.index}"
-    admin_username                  = "vincent"
+    computer_name                   = "worker-${count.index}"
+    admin_username                  = "azureuser"
     disable_password_authentication = true
 
     admin_ssh_key {
-      username   = "vincent"
+      username   = "azureuser"
       public_key = tls_private_key.SSH.public_key_openssh
    }
 
@@ -42,8 +44,9 @@ resource "tls_private_key" "SSH" {
     }
 }
 
+# Create 1 VM Manager
  resource "azurerm_linux_virtual_machine" "Manager" {
-    name                  = "Manager"
+    name                  = "manager"
     location              = azurerm_resource_group.Kubernetes.location
     resource_group_name   = azurerm_resource_group.Kubernetes.name
     size                  = "Standard_D2ds_v4"
@@ -52,18 +55,18 @@ resource "tls_private_key" "SSH" {
      ]
 
     source_image_reference {
-     publisher = "Canonical"
-     offer     = "0001-com-ubuntu-server-jammy"
-     sku       = "22_04-lts-gen2"
+     publisher = "OpenLogic"
+     offer     = "CentOS"
+     sku       = "8_5-gen2"
      version   = "latest"
     }
 
-    computer_name                   = "Manager"
-    admin_username                  = "vincent"
+    computer_name                   = "manager"
+    admin_username                  = "azureuser"
     disable_password_authentication = true
 
     admin_ssh_key {
-     username   = "vincent"
+     username   = "azureuser"
      public_key = tls_private_key.SSH.public_key_openssh
     }
 
