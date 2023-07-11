@@ -71,7 +71,7 @@
         baseurl: https://download.docker.com/linux/centos/8/$basearch/stable
         enabled: yes
         gpgcheck: yes
-        gpgkey: sudo rpm --import https://download.docker.com/linux/centos/gpg
+        gpgkey: https://download.docker.com/linux/centos/gpg
 
     - name: Ajouter la clé GPG de Kubernetes
       rpm_key:
@@ -85,7 +85,7 @@
         baseurl: https://packages.cloud.google.com/yum/repos/kubernetes-el7-$basearch
         enabled: yes
         gpgcheck: yes
-        gpgkey: sudo rpm --import https://packages.cloud.google.com/yum/doc/yum-key.gpg 
+        gpgkey: https://packages.cloud.google.com/yum/doc/yum-key.gpg 
 
     - name: Installer Containerd
       yum:
