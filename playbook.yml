@@ -75,7 +75,7 @@
 
     - name: Ajouter la clé GPG de Kubernetes
       rpm_key:
-        key: https://packages.cloud.google.com/apt/doc/yum-key.gpg | sudo apt-key add -
+        key: https://packages.cloud.google.com/apt/doc/yum-key.gpg
         state: present
 
     - name: Ajouter le dépôt YUM de Kubernetes
@@ -85,7 +85,7 @@
         baseurl: https://packages.cloud.google.com/apt/repos/kubernetes-el7-$basearch
         enabled: yes
         gpgcheck: yes
-        gpgkey: https://packages.cloud.google.com/apt/doc/yum-key.gpg | sudo apt-key add -
+        gpgkey: https://packages.cloud.google.com/apt/doc/yum-key.gpg 
 
     - name: Installer Containerd
       yum:
