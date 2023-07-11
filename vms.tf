@@ -1,9 +1,3 @@
-# Create a Resource Group
-resource "azurerm_resource_group" "Kubernetes" {
-   name = "Groupe-3_Brief-15"
-   location = var.location
-}
-
 # Create (and display) an SSH key
 resource "tls_private_key" "SSH" {
   algorithm = "RSA"
@@ -14,8 +8,8 @@ resource "tls_private_key" "SSH" {
  resource "azurerm_linux_virtual_machine" "test" {
     count                 = 2
     name                  = "worker${count.index}"
-    location              = azurerm_resource_group.Kubernetes.location
-    resource_group_name   = azurerm_resource_group.Kubernetes.name
+    location              = var.location
+    resource_group_name   = var.resource_group_name
     size                  = "Standard_D2ds_v4"
     network_interface_ids = [
      azurerm_network_interface.test["${count.index}"].id
@@ -28,7 +22,7 @@ resource "tls_private_key" "SSH" {
      version   = "latest"
     }
 
-    computer_name                   = "worker-${count.index}"
+    computer_name                   = "worker${count.index}"
     admin_username                  = "azureuser"
     disable_password_authentication = true
 
@@ -47,8 +41,8 @@ resource "tls_private_key" "SSH" {
 # Create 1 VM Manager
  resource "azurerm_linux_virtual_machine" "Manager" {
     name                  = "manager"
-    location              = azurerm_resource_group.Kubernetes.location
-    resource_group_name   = azurerm_resource_group.Kubernetes.name
+    location              = var.location
+    resource_group_name   = var.resource_group_name
     size                  = "Standard_D2ds_v4"
     network_interface_ids = [
      azurerm_network_interface.test["${2}"].id
@@ -76,5 +70,5 @@ resource "tls_private_key" "SSH" {
       storage_account_type = "Standard_LRS"
     }
 
-    depends_on = [azurerm_resource_group.Kubernetes]
+    depends_on = [var.resource_group_name]
 }
