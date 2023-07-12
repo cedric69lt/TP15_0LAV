@@ -2,14 +2,14 @@
  resource "azurerm_virtual_network" "test" {
    name                = "Vnet"
    address_space       = ["10.0.0.0/16"]
-   location            = azurerm_resource_group.test.location
-   resource_group_name = azurerm_resource_group.test.name
+   location            = azurerm_resource_group.Kubernetes.location
+   resource_group_name = azurerm_resource_group.Kubernetes.name
  }
 
 #### Création du Subnet (/24 sur le /16 du Vnet)
  resource "azurerm_subnet" "test" {
    name                 = "subNet"
-   resource_group_name  = azurerm_resource_group.test.name
+   resource_group_name  = azurerm_resource_group.Kubernetes.name
    virtual_network_name = azurerm_virtual_network.test.name
    address_prefixes     = ["10.0.2.0/24"]
  }
@@ -18,7 +18,7 @@
  resource "azurerm_public_ip" "test" {
    count                        = 3
    name                         = "Public_IP-${count.index}"
-   location                     = azurerm_resource_group.test.location
+   location                     = azurerm_resource_group.Kubernetes.location
    resource_group_name          = azurerm_resource_group.test.name
    allocation_method            = "Static"
 
@@ -28,8 +28,8 @@
   resource "azurerm_network_interface" "test" {
    count               = 3
    name                = "Network_Interface-${count.index}"
-   location            = azurerm_resource_group.test.location
-   resource_group_name = azurerm_resource_group.test.name
+   location            = azurerm_resource_group.Kubernetes.location
+   resource_group_name = azurerm_resource_group.Kubernetes.name
 
    ip_configuration {
      name                          = "testConfiguration"
@@ -43,7 +43,7 @@
 #### Création du NSG
  resource "azurerm_network_security_group" "allowedports" {
    name = "allowedports"
-   resource_group_name = azurerm_resource_group.test.name
+   resource_group_name = azurerm_resource_group.Kubernetes.name
    location = azurerm_resource_group.test.location
   
    security_rule {
