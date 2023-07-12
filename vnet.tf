@@ -22,7 +22,7 @@
    resource_group_name          = azurerm_resource_group.Kubernetes.name
    allocation_method            = "Static"
 
-   depends_on = [azurerm_resource_group.Kubernetes]
+   depends_on = [var.resource_group_name]
  }
 #### Création de nos 3 interfaces réseau à l'aide de "count"
   resource "azurerm_network_interface" "test" {
