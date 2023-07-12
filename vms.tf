@@ -1,9 +1,3 @@
-# Create a Resource Group
-resource "azurerm_resource_group" "Kubernetes" {
-   name = "Groupe3-Test"
-   location = var.location
-}
-
 # Create (and display) an SSH key
 resource "tls_private_key" "SSH" {
   algorithm = "RSA"
