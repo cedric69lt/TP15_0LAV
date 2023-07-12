@@ -37,7 +37,7 @@
      private_ip_address_allocation = "Dynamic"
      public_ip_address_id          = azurerm_public_ip.test["${count.index}"].id
    }
-   depends_on = [var.azurerm_resource_group.test]
+   depends_on = [var.resource_group_name]
  }
 
 #### Création du NSG
