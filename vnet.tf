@@ -19,7 +19,7 @@
    count                        = 3
    name                         = "Public_IP-${count.index}"
    location                     = azurerm_resource_group.Kubernetes.location
-   resource_group_name          = azurerm_resource_group.test.name
+   resource_group_name          = azurerm_resource_group.Kubernetes.name
    allocation_method            = "Static"
 
    depends_on = [var.resource_group_name]
@@ -44,7 +44,7 @@
  resource "azurerm_network_security_group" "allowedports" {
    name = "allowedports"
    resource_group_name = azurerm_resource_group.Kubernetes.name
-   location = azurerm_resource_group.test.location
+   location = azurerm_resource_group.Kubernetes.location
   
    security_rule {
        name = "http"
