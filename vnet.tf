@@ -1,74 +1,96 @@
-# Create (and display) an SSH key
-resource "tls_private_key" "SSH" {
-  algorithm = "RSA"
-  rsa_bits  = 4096
-}
+ #### Création du Réseau Virtuel (Vnet) 
+ resource "azurerm_virtual_network" "test" {
+   name                = "Vnet"
+   address_space       = ["10.0.0.0/16"]
+   location            = azurerm_resource_group.Kubernetes.location
+   resource_group_name = azurerm_resource_group.Kubernetes.name
+ }
 
-# Create 2 VMs Worker
- resource "azurerm_linux_virtual_machine" "test" {
-    count                 = 2
-    name                  = "worker${count.index}"
-    location              = var.location
-    resource_group_name   = var.resource_group_name
-    size                  = "Standard_D2ds_v4"
-    network_interface_ids = [
-     azurerm_network_interface.test["${count.index}"].id
-    ]
+#### Création du Subnet (/24 sur le /16 du Vnet)
+ resource "azurerm_subnet" "test" {
+   name                 = "subNet"
+   resource_group_name  = azurerm_resource_group.Kubernetes.name
+   virtual_network_name = azurerm_virtual_network.test.name
+   address_prefixes     = ["10.0.2.0/24"]
+ }
 
-    source_image_reference {
-     publisher = "OpenLogic"
-     offer     = "CentOS"
-     sku       = "8_5-gen2"
-     version   = "latest"
-    }
+#### Création des Ip publiques que l'on attribuera aux VM's
+ resource "azurerm_public_ip" "test" {
+   count                        = 3
+   name                         = "Public_IP-${count.index}"
+   location                     = azurerm_resource_group.Kubernetes.location
+   resource_group_name          = azurerm_resource_group.Kubernetes.name
+   allocation_method            = "Static"
 
-    computer_name                   = "worker${count.index}"
-    admin_username                  = "azureuser"
-    disable_password_authentication = true
+   depends_on = [azurerm_resource_group.Kubernetes]
+ }
+#### Création de nos 3 interfaces réseau à l'aide de "count"
+  resource "azurerm_network_interface" "test" {
+   count               = 3
+   name                = "Network_Interface-${count.index}"
+   location            = azurerm_resource_group.Kubernetes.location
+   resource_group_name = azurerm_resource_group.Kubernetes.name
 
-    admin_ssh_key {
-      username   = "azureuser"
-      public_key = tls_private_key.SSH.public_key_openssh
+   ip_configuration {
+     name                          = "testConfiguration"
+     subnet_id                     = azurerm_subnet.test.id
+     private_ip_address_allocation = "Dynamic"
+     public_ip_address_id          = azurerm_public_ip.test["${count.index}"].id
+   }
+   depends_on = [azurerm_resource_group.Kubernetes]
+ }
+
+#### Création du NSG
+ resource "azurerm_network_security_group" "allowedports" {
+   name = "allowedports"
+   resource_group_name = azurerm_resource_group.Kubernetes.name
+   location = azurerm_resource_group.Kubernetes.location
+  
+   security_rule {
+       name = "http"
+       priority = 100
+       direction = "Inbound"
+       access = "Allow"
+       protocol = "Tcp"
+       source_port_range = "*"
+       destination_port_range = "80"
+       source_address_prefix = "*"
+       destination_address_prefix = "*"
    }
 
-    os_disk {
-      name = "OSdisk${count.index}"
-      caching = "ReadWrite"
-      storage_account_type = "Standard_LRS"
-    }
-}
+   security_rule {
+       name = "https"
+       priority = 200
+       direction = "Inbound"
+       access = "Allow"
+       protocol = "Tcp"
+       source_port_range = "*"
+       destination_port_range = "443"
+       source_address_prefix = "*"
+       destination_address_prefix = "*"
+   }
 
-# Create 1 VM Manager
- resource "azurerm_linux_virtual_machine" "Manager" {
-    name                  = "manager"
-    location              = var.location
-    resource_group_name   = var.resource_group_name
-    size                  = "Standard_D2ds_v4"
-    network_interface_ids = [
-     azurerm_network_interface.test["${2}"].id
-     ]
+   security_rule {
+       name = "ssh"
+       priority = 300
+       direction = "Inbound"
+       access = "Allow"
+       protocol = "Tcp"
+       source_port_range = "*"
+       destination_port_range = "22"
+       source_address_prefix = "*"
+       destination_address_prefix = "*"
+   }
 
-    source_image_reference {
-     publisher = "OpenLogic"
-     offer     = "CentOS"
-     sku       = "8_5-gen2"
-     version   = "latest"
-    }
-
-    computer_name                   = "manager"
-    admin_username                  = "azureuser"
-    disable_password_authentication = true
-
-    admin_ssh_key {
-     username   = "azureuser"
-     public_key = tls_private_key.SSH.public_key_openssh
-    }
-
-    os_disk {
-      name = "OSdisk"
-      caching = "ReadWrite"
-      storage_account_type = "Standard_LRS"
-    }
-
-    depends_on = [var.resource_group_name]
+   security_rule {
+       name = "all"
+       priority = 400
+       direction = "Inbound"
+       access = "Allow"
+       protocol = "*"
+       source_port_range = "*"
+       destination_port_range = "*"
+       source_address_prefix = "10.0.0.0/16"
+       destination_address_prefix = "VirtualNetwork"
+   }
 }
