@@ -5,7 +5,7 @@ resource "tls_private_key" "SSH" {
 }
 
 # Create 2 VMs Worker
- resource "azurerm_linux_virtual_machine" "test" {
+ resource "azurerm_linux_virtual_machine" "test2" {
     count                 = 2
     name                  = "worker${count.index}"
     location              = var.location
