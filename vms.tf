@@ -39,7 +39,7 @@ resource "tls_private_key" "SSH" {
 }
 
 # Create 1 VM Manager
- resource "azurerm_linux_virtual_machine" "Manager" {
+ resource "azurerm_linux_virtual_machine" "Manager2" {
     name                  = "manager"
     location              = var.location
     resource_group_name   = var.resource_group_name
