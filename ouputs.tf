@@ -8,6 +8,6 @@ output "private" {
   sensitive = true
 }
 
-output "public_ip" {
-  value = azurerm_public_ip.test[count.index]
+output "public_ips" {
+  value = [for instance in azurerm_virtual_machine.test : instance.public_ip_address]
 }
