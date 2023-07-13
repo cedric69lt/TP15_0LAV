@@ -8,4 +8,6 @@ output "private" {
   sensitive = true
 }
 
-
+output "public_ip" {
+  value = azurerm_public_ip.test.public_ip
+}
