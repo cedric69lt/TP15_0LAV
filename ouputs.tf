@@ -9,5 +9,5 @@ output "private" {
 }
 
 output "public_ips" {
-  value = [for instance in azurerm_public_ip.test : instance.public_ip_address]
+  value = [for instance in azurerm_public_ip.test : instance.name]
 }
