@@ -9,5 +9,5 @@ output "private" {
 }
 
 output "public_ip" {
-  value = azurerm_public_ip.test.Public_IP-${count.index}
+  value = azurerm_public_ip.test.name
 }
