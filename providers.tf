@@ -14,8 +14,13 @@ variable "location" {
    description = "Region"
    default = "westeurope"
 }
+
 variable "resource_group_name" {
   type        = string
   description = "Nom du groupe de ressources Azure"
   default     = "Groupe3-test"
+}
+
+variable "admin_username" {
+   type = string
 }
