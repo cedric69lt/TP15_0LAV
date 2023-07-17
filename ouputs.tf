@@ -25,5 +25,5 @@ output "IP_pub_manager" {
 }
 
 output "vm_usernames" {
-   value = vms.usernames
+   value = azurerm_linux_virtual_machine.username
 }
