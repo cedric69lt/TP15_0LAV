@@ -12,10 +12,6 @@ output "public_ips" {
   value = [for instance in azurerm_public_ip.test : instance.name]
 }
 
-output "vm_usernames" {
-   value = vms.usernames
-}
-
 output "IP_pub_worker_0" {
   value = azurerm_public_ip.test[0].ip_address
 }
