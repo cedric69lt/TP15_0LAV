@@ -21,6 +21,3 @@ variable "resource_group_name" {
   default     = "Groupe3-test"
 }
 
-variable "admin_username" {
-   type = string
-}
