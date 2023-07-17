@@ -13,7 +13,7 @@ output "public_ips" {
 }
 
 output "IP_worker_0" {
-  value = P_pub_worker_0
+  value = IP_pub_worker_0
 }
 
 output "IP_worker_1" {
