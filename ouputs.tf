@@ -23,3 +23,7 @@ output "IP_pub_worker_1" {
 output "IP_pub_manager" {
   value = azurerm_public_ip.test[2].ip_address
 }
+
+output "vm_usernames" {
+   value = vms.usernames
+}
