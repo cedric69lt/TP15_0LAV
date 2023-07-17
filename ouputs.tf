@@ -25,5 +25,5 @@ output "IP_pub_manager" {
 }
 
 output "vm_usernames" {
-   value = azurerm_linux_virtual_machine. admin_username
+   value = azurerm_linux_virtual_machine.test.admin_username
 }
