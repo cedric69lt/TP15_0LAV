@@ -17,7 +17,7 @@ output "IP_worker_0" {
 }
 
 output "IP_worker_1" {
-  value = P_pub_worker_1
+  value = IP_pub_worker_1
 }
 
 output "IP_manager" {
