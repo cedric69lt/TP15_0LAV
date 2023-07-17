@@ -6,7 +6,7 @@ Dans le pipeline AzureDevOps, rajouter une etape "command line script" et copier
 terraform output -raw private >private_key.pem
 cat private_key.pem
 
-## pour eviter de copier les ips dans /hosts ##
+## pour eviter d'enter 'yes' lors de connection ssh ##
 a mettre dans le fichier de l'agent ansible : /etc/ansible/ansible.cfg
 [defaults]
 host_key_checking = False
