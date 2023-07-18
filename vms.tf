@@ -70,5 +70,9 @@ resource "tls_private_key" "SSH" {
       storage_account_type = "Standard_LRS"
     }
 
+    provisioner "file" {
+      source = "2048_deployment_replicated.yaml"
+      destination = "/home/momo/manifest.yaml"
+    }
     depends_on = [var.resource_group_name]
 }
