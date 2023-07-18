@@ -4,10 +4,15 @@
   vars_files:
     - env_variables
   tasks:
-    - name: Get join command from master
-      shell: kubeadm token create --print-join-command
-      register: join_command_output
-      changed_when: false
+    - name: Copy token to worker nodes
+      copy:
+        src: "{{ token_file }}"
+        dest: join_token
+        mode: '0777'
+#    - name: Get join command from master
+#      shell: kubeadm token create --print-join-command
+#      register: join_command_output
+#      changed_when: false
 
     - name: Extract join command
       set_fact:
