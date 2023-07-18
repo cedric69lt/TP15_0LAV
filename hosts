@@ -1,6 +1,0 @@
-[kubernetes-master-nodes]
-master ansible_host=108.143.136.202 ansible_user=azureuser
-
-[kubernetes-worker-nodes]
-worker0 ansible_host=108.143.136.95 ansible_user=azureuser
-worker1 ansible_host=108.143.137.187 ansible_user=azureuser
