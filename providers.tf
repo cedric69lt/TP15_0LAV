@@ -18,7 +18,7 @@ variable "location" {
 variable "resource_group_name" {
   type        = string
   description = "Nom du groupe de ressources Azure"
-  default     = "Groupe3-test"
+  default     = "Groupe3-Brief15"
 }
 
 
