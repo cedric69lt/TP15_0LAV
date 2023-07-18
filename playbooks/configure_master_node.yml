@@ -44,11 +44,11 @@
       chdir: /home/azureuser
     when: "'manager' in inventory_hostname"
 
-  - name: 2048 Deployment replicated
-    command:
-      cmd: kubectl apply -f /home/azureuser/manifest.yaml
+  #- name: 2048 Deployment replicated
+  #  command:
+  #    cmd: kubectl apply -f /home/azureuser/manifest.yaml
 
-  - name: Expose service 2048
-    command:
-      cmd: kubectl expose deploy app2048 --type=LoadBalancer --port 80 --target-port=80
+  #- name: Expose service 2048
+  #  command:
+  #    cmd: kubectl expose deploy app2048 --type=LoadBalancer --port 80 --target-port=80
 
