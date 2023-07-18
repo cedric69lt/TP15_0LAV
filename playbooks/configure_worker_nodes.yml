@@ -1,3 +1,15 @@
+- hosts: kubernetes-master-nodes
+  become: yes
+  become_user: root
+  vars_files:
+    - env_variables
+  tasks:
+    - name: Get join command from master
+      shell: kubeadm token create --print-join-command
+      register: join_command_output
+      changed_when: false
+
+
 - hosts: kubernetes-worker-nodes
   become: yes
   become_user: root
