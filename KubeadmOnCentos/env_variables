@@ -17,6 +17,7 @@ ports:
 - "6443/tcp"
 - "10250/tcp"
 - "8080/tcp"
+- "80/tcp"
 token_file: join_token
 ###################################################################################
 # Dont Edit these above values, these are mandatory to configure kubernetes cluster
