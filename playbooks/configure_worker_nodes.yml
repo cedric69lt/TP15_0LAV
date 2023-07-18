@@ -1,37 +1,28 @@
 - hosts: kubernetes-master-nodes
   become: yes
-  become_user: root
-  vars_files:
-    - env_variables
   tasks:
-    - name: Get join command from master
-      shell: kubeadm token create --print-join-command
-      register: join_command_output
-      changed_when: false
+    - name: get join command
+      command: /usr/bin/kubeadm token create --print-join-command
+      register: join_command_raw
+    - debug: msg="{{ join_command_raw.stdout_lines[0] }}"
 
-
-- hosts: kubernetes-worker-nodes
-  become: yes
-  become_user: root
-  vars_files:
-    - env_variables
-  tasks:
-    - name: Copy token to worker nodes
-      copy:
-        src: "{{ token_file }}"
-        dest: join_token
-        mode: '0777'
-    - name: Get join command from master
-      shell: kubeadm token create --print-join-command
-      register: join_command_output
-      changed_when: false
-
-    - name: Extract join command
+    - name: set join command
       set_fact:
-        join_command: "{{ join_command_output.stdout_lines[0] }}"
-      changed_when: false
+        join_command: "{{ join_command_raw.stdout_lines[0] }}"
 
-    - name: Run kubeadm join command on worker nodes
-      command: "{{ join_command }}"
-      when: "'worker0' in inventory_hostname or 'worker1' in inventory_hostname"
+
+- hosts: workers
+  become: true
+  tasks:
+    - name: remove swap
+      command: /sbin/swapoff -a
+
+    - name: TCP port 6443 on master is reachable from worker
+      wait_for: 
+        host: "{{ hostvars['master']['ansible_default_ipv4']['address'] }}"
+        port: 6443
+        timeout: 1
+
+    - name: join cluster
+      command: "{{ hostvars['master'].join_command }}"
 
