@@ -39,7 +39,7 @@
   - name: Install Calico CNI
     become: yes
     become_user: azureuser
-    shell: kubectl apply -f https://raw.githubusercontent.com/projectcalico/calico/v3.25.0/manifests/calico.yaml 
+    shell: kubectl apply -f https://raw.githubusercontent.com/projectcalico/calico/v3.26.1/manifests/calico.yaml -O
     args:
       chdir: /home/azureuser
     when: "'manager' in inventory_hostname"
