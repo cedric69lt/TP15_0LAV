@@ -1,9 +1,7 @@
 ---
 - hosts: kubernetes-master-nodes
   become: yes
-  tasks:
-  become: yes
-  tasks:
+  tasks: 
     - name: initialize the cluster
       shell: sudo kubeadm init --pod-network-cidr=192.168.0.0/16  --cri-socket=/var/run/crio/crio.sock  --ignore-preflight-errors Swap >> cluster_initialized.txt
       args:
