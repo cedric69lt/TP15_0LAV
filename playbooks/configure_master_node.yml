@@ -10,7 +10,7 @@
 
     - name: create .kube directory
       become: yes
-      become_user: k8sadmin
+      become_user: azureuser
       file:
         path: /home/azureuser/.kube
         state: directory
