@@ -9,7 +9,7 @@
 
 
   - name: Initializing Kubernetes cluster
-    shell: kubeadm init --upload-certs --control-plane-endpoint manager:6443 --pod-network-cidr=192.168.0.0/16
+    shell: kubeadm init --upload-certs --control-plane-endpoint manager:6443 --pod-network-cidr=10.244.0.0/16
     register: output
 
   - name: Copying required files
