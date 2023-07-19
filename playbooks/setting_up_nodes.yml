@@ -66,46 +66,17 @@
       regexp: '^disabled_plugins\s*='
       line: 'disabled_plugins = []'
 
-#  - name: Load br_netfilter kernel module
-#    modprobe:
-#      name: br_netfilter
-#      state: present
-
-#  - name: Ensure br_netfilter module is loaded at boot
-#    lineinfile:
-#      dest: /etc/modules-load.d/br_netfilter.conf
-#      line: 'br_netfilter'
-#      create: true
-  - name: Load required modules
-    community.general.modprobe:
-      name: "{{ item }}"
+  - name: Load br_netfilter kernel module
+    modprobe:
+      name: br_netfilter
       state: present
-    with_items:
-      - br_netfilter
-      - overlay
-      - ip_vs
-      - ip_vs_rr
-      - ip_vs_wrr
-      - ip_vs_sh
-      - nf_conntrack
-    
-  - name: Create the .conf file to load the modules at bootup
-    ansible.builtin.template:
-      src: kernel_modules.conf.j2
-      dest: /etc/modules-load.d/k8s_kernel_modules.conf
 
-  - name: Modify sysctl entries
-    ansible.posix.sysctl:
-      name: '{{ item.key }}'
-      value: '{{ item.value }}'
-      sysctl_set: yes
-      state: present
-      reload: yes
-    ignore_errors: True
-    with_items:
-      - {key: net.bridge.bridge-nf-call-ip6tables, value: 1}
-      - {key: net.bridge.bridge-nf-call-iptables,  value: 1}
-      - {key: net.ipv4.ip_forward,  value: 1}
+  - name: Ensure br_netfilter module is loaded at boot
+    lineinfile:
+      dest: /etc/modules-load.d/br_netfilter.conf
+      line: 'br_netfilter'
+      create: true
+
   - name: Enable bridge-nf-call-iptables
     sysctl:
       name: net.bridge.bridge-nf-call-iptables
