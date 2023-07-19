@@ -5,10 +5,10 @@
   - env_variables 
   tasks:
   - name: Add hostname and IP address to /etc/hosts file
-      lineinfile:
-        dest: /etc/hosts
-        line: "{{ ansible_default_ipv4.address }} {{ ansible_hostname }}"
-        state: present
+    lineinfile:
+      dest: /etc/hosts
+      line: "{{ ansible_default_ipv4.address }} {{ ansible_hostname }}"
+      state: present
   - name: Creating a repository file for Kubernetes
     file:
      path: /etc/yum.repos.d/kubernetes.repo
