@@ -5,4 +5,4 @@
   - name: Deploy 2048 game
     become: yes
     become_user: azureuser
-    shell: kubectl create -f <(curl -s https://raw.githubusercontent.com/lingcode72/TP15_0LAV/main/deployment_app_2048.yml)
+    shell: kubectl create -f https://raw.githubusercontent.com/lingcode72/TP15_0LAV/main/deployment_app_2048.yml
