@@ -3,38 +3,36 @@
   become: yes
   tasks:
     - name: Create Deployment
-      k8s:
-        api_version: apps/v1
-        kind: Deployment
-        name: 2048-deployment
-        namespace: default
-        spec:
-          replicas: 4
-          selector:
-            matchLabels:
+      api_version: apps/v1
+      kind: Deployment
+      name: 2048-deployment
+      namespace: default
+      spec:
+        replicas: 4
+        selector:
+          matchLabels:
+            app: 2048
+        template:
+          metadata:
+            labels:
               app: 2048
-          template:
-            metadata:
-              labels:
-                app: 2048
-            spec:
-              containers:
-                - name: docker-2048
-                  image: alexwhen/docker-2048
-                  ports:
-                    - containerPort: 80
+          spec:
+            containers:
+              - name: docker-2048
+                image: alexwhen/docker-2048
+                ports:
+                  - containerPort: 80
 
     - name: Create Service
-      k8s:
-        api_version: v1
-        kind: Service
-        name: 2048-service
-        namespace: default
-        spec:
-          selector:
-            app: 2048
-          ports:
-            - protocol: TCP
-              port: 80
+      api_version: v1
+      kind: Service
+      name: 2048-service
+      namespace: default
+      spec:
+        selector:
+          app: 2048
+        ports:
+          - protocol: TCP
+            port: 80
               targetPort: 80
           type: NodePort
