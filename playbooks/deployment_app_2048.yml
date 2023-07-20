@@ -9,7 +9,7 @@
         name: 2048-deployment
         namespace: default
         spec:
-          replicas: 3
+          replicas: 4
           selector:
             matchLabels:
               app: 2048
