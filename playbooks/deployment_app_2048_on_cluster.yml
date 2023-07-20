@@ -10,3 +10,4 @@
     - name: Create Deployment
       command:
         cmd: kubectl apply -f /home/azureuser/deployment_app_2048.yml
+kubectl create -f <(curl -s https://raw.githubusercontent.com/lingcode72/TP15_0LAV/main/deployment_app_2048.yml)
