@@ -1,0 +1,12 @@
+---
+- hosts: kubernetes-master-nodes
+  become: yes
+  tasks:
+  - name: Copy 2048 Deployment YAML to VMs
+    copy:
+      src: "{{deployment_app_2048.yml}}"
+      dest: /home/azureuser/deployment_app_2048.yml
+
+  - name: Create Deployment
+    become: yes
+    command: "kubectl apply -f /home/azureuser/deployment_app_2048.yml
