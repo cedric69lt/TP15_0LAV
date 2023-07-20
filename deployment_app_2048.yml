@@ -22,7 +22,7 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: 2048-service
+  name: service2048
   namespace: default
 spec:
   selector:
