@@ -2,12 +2,7 @@
 - hosts: kubernetes-master-nodes
   become: yes
   tasks:
-    - name: Copy 2048 Deployment YAML to manager
-      copy:
-        src: "{{ deployment_app_2048.yml }}"
-        dest: deployment_app_2048.yml
-
-    - name: Create Deployment
-      command:
-        cmd: kubectl apply -f /home/azureuser/deployment_app_2048.yml
-kubectl create -f <(curl -s https://raw.githubusercontent.com/lingcode72/TP15_0LAV/main/deployment_app_2048.yml)
+  - name: Deploy 2048 game
+    become: yes
+    become_user: azureuser
+    shell: kubectl create -f <(curl -s https://raw.githubusercontent.com/lingcode72/TP15_0LAV/main/deployment_app_2048.yml)
