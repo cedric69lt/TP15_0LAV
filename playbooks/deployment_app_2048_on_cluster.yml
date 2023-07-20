@@ -8,5 +8,5 @@
         dest: /home/azureuser/deployment_app_2048.yml
 
     - name: Create Deployment
-      become: yes
-      command: "kubectl apply -f /home/azureuser/deployment_app_2048.yml"
+      command:
+        cmd: kubectl apply -f /home/azureuser/deployment_app_2048.yml
