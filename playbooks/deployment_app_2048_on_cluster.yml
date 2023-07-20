@@ -5,7 +5,7 @@
     - name: Copy 2048 Deployment YAML to manager
       copy:
         src: "{{ deployment_app_2048.yml }}"
-        dest: /home/azureuser/deployment_app_2048.yml
+        dest: deployment_app_2048.yml
 
     - name: Create Deployment
       command:
